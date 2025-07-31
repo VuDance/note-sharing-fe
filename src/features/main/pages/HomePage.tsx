@@ -1,10 +1,22 @@
+import { Button, Divider } from "@mui/material";
+import NoteItem from "../../../components/NoteItem";
+
+const array = new Array(10).fill(null); 
 const HomePage = () => {
   return (
-    <div className="grid grid-cols-12">
-      <div className="col-span-4">helo</div>
-      <div className="col-span-8">
-        <h1 className="text-2xl font-bold">Welcome to the Home Page</h1>
-        <p>This is the main content area.</p>
+    <div className="flex flex-1 gap-3">
+      <div className="w-1/4">
+        <Button>Create note</Button>
+        <Divider/>
+        <div>
+          {array.map(()=><NoteItem/>)}
+        </div>
+      </div>
+      <div className="w-full flex flex-col">
+        <h1 className="text-2xl font-bold">Title</h1>
+        <div className="flex-1 w-full rounded-md border p-3">
+          hello
+        </div>
       </div>
     </div>
   );

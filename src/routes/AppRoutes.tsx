@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import LoginPage from "../features/auth/pages/LoginPage";
 import HomePage from "../features/main/pages/HomePage";
-import MainLayout from "../components/MainLayout";
+import MainLayout from "../layout/MainLayout";
 
 const AppRoutes = () => (
   <Routes>
