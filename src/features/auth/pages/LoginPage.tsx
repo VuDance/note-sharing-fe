@@ -14,6 +14,9 @@ import { useForm, type SubmitHandler } from "react-hook-form";
 import type { LoginInputs } from "../../../types/auth";
 import { login } from "../../../services/authService";
 import Toast from "../../../utils/toast";
+import type { AxiosError } from "axios";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
@@ -63,6 +66,14 @@ export default function SignIn() {
     handleSubmit,
     formState: { errors },
   } = useForm<LoginInputs>();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+    if (token) {
+      navigate("/", { replace: true });
+    }
+  }, [navigate]);
 
   const onSubmit: SubmitHandler<LoginInputs> = async (data) => {
     try {
@@ -70,10 +81,9 @@ export default function SignIn() {
       Toast.success("Đăng nhập thành công!");
       window.location.href = "/";
     } catch (err) {
-      console.error(err);
-      Toast.error(
-        "Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin đăng nhập."
-      );
+      const error = err as AxiosError<{ message: string; status: number }>;
+      const errorMessage = error.response?.data?.message || error.message;
+      Toast.error(errorMessage);
     }
   };
   return (
@@ -112,11 +122,7 @@ export default function SignIn() {
                 fullWidth
                 variant="outlined"
                 {...register("username", {
-                  required: "Email is required",
-                  pattern: {
-                    value: /\S+@\S+\.\S+/,
-                    message: "Please enter a valid email address.",
-                  },
+                  required: "Không được để trống",
                 })}
                 color={errors.username ? "error" : "primary"}
               />
@@ -134,10 +140,6 @@ export default function SignIn() {
                 required
                 {...register("password", {
                   required: "Password is required",
-                  minLength: {
-                    value: 6,
-                    message: "Password must be at least 6 characters long.",
-                  },
                 })}
                 fullWidth
                 variant="outlined"
@@ -157,7 +159,7 @@ export default function SignIn() {
             <Typography sx={{ textAlign: "center" }}>
               Don&apos;t have an account?{" "}
               <Link
-                href="/material-ui/getting-started/templates/sign-in/"
+                href="/register"
                 variant="body2"
                 sx={{ alignSelf: "center" }}
               >

@@ -1,7 +1,14 @@
 // NoteItem.tsx
 import React from "react";
-import { ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
+import {
+  IconButton,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+} from "@mui/material";
 import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 interface NoteItemProps {
   item: {
@@ -9,20 +16,38 @@ interface NoteItemProps {
     title: string;
   };
   onClick?: () => void;
+  onDelete?: () => void;
 }
 
-const NoteItem: React.FC<NoteItemProps> = ({ item, onClick }) => {
+const NoteItem: React.FC<NoteItemProps> = ({ item, onClick, onDelete }) => {
   return (
-    <ListItemButton onClick={onClick}>
-      {item.icon ? (
-        <ListItemIcon>{item.icon}</ListItemIcon>
-      ) : (
-        <ListItemIcon>
-          <DescriptionOutlinedIcon className="text-white" />
-        </ListItemIcon>
-      )}
-      <ListItemText primary={item.title} />
-    </ListItemButton>
+    <ListItem
+      secondaryAction={
+        onDelete && (
+          <IconButton
+            edge="end"
+            onClick={(e) => {
+              e.stopPropagation();
+              onDelete?.();
+            }}
+          >
+            <DeleteIcon color="error" />
+          </IconButton>
+        )
+      }
+      disablePadding
+    >
+      <ListItemButton onClick={onClick}>
+        {item.icon ? (
+          <ListItemIcon>{item.icon}</ListItemIcon>
+        ) : (
+          <ListItemIcon>
+            <DescriptionOutlinedIcon className="text-white" />
+          </ListItemIcon>
+        )}
+        <ListItemText className="text-white" primary={item.title} />
+      </ListItemButton>
+    </ListItem>
   );
 };
 
