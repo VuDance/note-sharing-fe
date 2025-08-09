@@ -196,12 +196,12 @@ export function SimpleEditor({
   const toolbarRef = React.useRef<HTMLDivElement>(null);
 
   const editor = useEditor({
-    onUpdate: ({ editor }) => {
+    immediatelyRender: false,
+    onBlur: ({ editor }) => {
       if (onChange) {
         onChange(editor.getHTML());
       }
     },
-    immediatelyRender: false,
     shouldRerenderOnTransaction: false,
     editorProps: {
       attributes: {
@@ -255,8 +255,7 @@ export function SimpleEditor({
   React.useEffect(() => {
     if (editor && content) {
       editor.commands.setContent(content);
-    }
-    if (editor && content === "") {
+    } else if (editor && content === "") {
       editor.commands.setContent("<p></p>");
     }
   }, [editor, content]);

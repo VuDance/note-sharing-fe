@@ -28,6 +28,10 @@ const EditNotePage = () => {
   };
   const updateNewNote = async () => {
     if (!id) return;
+    if (!title || !content) {
+      Toast.error("Title and content cannot be empty!");
+      return;
+    }
     await updateNote(id, { title, content }).then(() =>
       Toast.success("Note updated successfully!")
     );
