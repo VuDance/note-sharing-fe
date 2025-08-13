@@ -3,7 +3,7 @@ import axios from "axios";
 
 // Tạo instance riêng cho Axios
 const axiosClient = axios.create({
-  baseURL: "http://localhost:8080", // API base URL của bạn
+  baseURL: "http://localhost:8080/api",
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",
@@ -37,10 +37,11 @@ axiosClient.interceptors.response.use(
           Toast.error("Unauthorized. Please login again.");
           localStorage.removeItem("accessToken");
           window.location.href = "/login";
-          // Có thể redirect đến login, hoặc xóa token...
           break;
         case 403:
           Toast.error("You do not have permission to perform this action.");
+          localStorage.removeItem("accessToken");
+          window.location.href = "/login";
           break;
         case 500:
           Toast.error(error.response.data?.message || "Internal server error.");

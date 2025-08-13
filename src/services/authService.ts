@@ -2,7 +2,7 @@ import type { LoginInputs } from "../types/auth";
 import axiosClient from "./axiosClient";
 
 export const login = async ({ username, password }: LoginInputs) => {
-  const res = await axiosClient.post("/api/auth/login", { username, password });
+  const res = await axiosClient.post("/auth/login", { username, password });
   localStorage.setItem("accessToken", res.data.token);
   localStorage.setItem("userId", res.data.userId);
   localStorage.setItem("username", res.data.username);
@@ -10,7 +10,7 @@ export const login = async ({ username, password }: LoginInputs) => {
 };
 
 export const registerAccount = async ({ username, password }: LoginInputs) => {
-  const res = await axiosClient.post("/api/auth/register", {
+  const res = await axiosClient.post("/auth/register", {
     username,
     password,
   });
